@@ -1,2 +1,2 @@
-# jada
-John's Automated Dating Assistant
+# Jaspa
+John's Automated Scheduling and Planning Assistant
