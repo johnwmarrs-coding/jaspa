@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from authentication import validate_token, authenticate
+from chat import handle_message
 app = Flask(__name__)
 def hello_world():
     return "<p>Hello, World!"
@@ -24,30 +25,17 @@ def authenticate_user():
 
 @app.route('/chat', methods=['POST'])
 def chat():
+    data = request.get_json()
     authorization_header = request.headers.get('Authorization')
     if authorization_header:
-        token = authorization_header.split(' ')[1]
+        token_hash = authorization_header.split(' ')[1]
         print(authorization_header)
-        print(token)
         
-        if validate_token(token): 
-            return 'Look at us chatting!'
+        token = validate_token(token_hash)
+        if token:
+            return handle_message(sender=token['user'], message=data['message'])
         else:
             return '', 401
-
-    # Extract JSON data from request
-    data = request.get_json()
-
-    # Validate user and fetch identify
-
-    # Process Chat
-
-    # Return response
-
-
-    # Compare Auth Data to DB
-
-    return jsonify(data)
 
 
 

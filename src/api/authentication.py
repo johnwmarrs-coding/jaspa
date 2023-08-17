@@ -24,10 +24,10 @@ def validate_token(token_hash):
 
     if not result:
         print("Invalid Token")
-        return False
+        return None
     else:
         print(result)
-        return True
+        return result
 
 
 
