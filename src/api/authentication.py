@@ -7,11 +7,12 @@ import os
 from bson import json_util
 
 uri = os.environ.get("MONGO_CONNECTION")
-print(uri)
-print("MONGO_CONNECTION" in os.environ.keys())
 
 # Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
+client = None
+
+if (uri):
+    client = MongoClient(uri, server_api=ServerApi('1'))
 
 def validate_token(token_hash):
 
@@ -62,29 +63,48 @@ def generate_token(user, salt):
 
 def authenticate(data):
 
+    print('You data is:')
+    print(data)
+
     # Send a ping to confirm a successful connection
     try:
 
         db = client["jaspa"]
         collection = db["configuration"]
 
+
         query = {"name": "configuration"}
 
         #result = collection.update_one(query, {"$set": {"emoji_secret": "😵‍💫🌪🍣🐟"}})
         result = collection.find_one(query)
 
-        emoji_passed = data['emoji_password'] == result['emoji_secret']
+        print(result)
+
+        print('1')
+
+        secret_passed = repr(data['password']) == repr(result['secret'])
+
+        print('2')
 
         date_passed = data['first_date_password'] == result['date_secret']
+        print(date_passed)
+
+        print('3')
 
         john_passed = data['user_password'].lower() == str(result['john_password']).lower()
+        print(john_passed)
+
+        print('4')
         riley_passed = data['user_password'].lower() == str(result['riley_password']).lower()
+        print(riley_passed)
+        print('5')
 
 
 
         #print(result['emoji_secret'] ==  '😵‍💫🌪🍣🐟')
         token = None
-        if (emoji_passed and date_passed and (john_passed or riley_passed)):
+        if (secret_passed and date_passed and (john_passed or riley_passed)):
+            print('6')
             if (john_passed):
                 print('Welcome John!')
                 token=generate_token('John', result['salt'])
@@ -104,5 +124,4 @@ def authenticate(data):
     except Exception as e:
         print(e)
 
-#authenticate({"emoji_password": '😵‍💫🌪🍣🐟', "first_date_password": "06/03/2023", "user_password": "Canada Goose"})
 

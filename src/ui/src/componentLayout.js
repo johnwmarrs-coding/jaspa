@@ -3,7 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "./App";
 
 const Layout = () => {
-  const user = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   return (
     <>
       <nav>

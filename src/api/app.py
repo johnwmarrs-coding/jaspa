@@ -1,15 +1,25 @@
 from flask import Flask, request, jsonify
 from authentication import validate_token, authenticate
 from chat import handle_message
+from flask_cors import CORS
 app = Flask(__name__)
-def hello_world():
-    return "<p>Hello, World!"
+import os
+CORS(app)
+
+
+mock = os.environ.get("MOCK")
+
+def mock_authenticate(success=True):
+    if (success):
+        pass
+    else:
+        pass
+
 
 @app.route('/authenticate', methods=['POST'])
 def authenticate_user():
     # Extract JSON data from request
     data = request.get_json()
-    #print(data)
 
     # Compare Auth Data to DB
     # Return error or with authentication token and display name
@@ -19,9 +29,6 @@ def authenticate_user():
         return authentication_token
     else:
         return '', 401
-    #authenticate({"emoji_password": '😵‍💫🌪🍣🐟', "first_date_password": "06/03/2023", "user_password": "Canada Goose"})
-
-    return jsonify(data)
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -37,25 +44,5 @@ def chat():
         else:
             return '', 401
 
-
-
-@app.route('/sms', methods=['POST'])
-def chat_sms():
-    # Extract JSON data from request
-    data = request.get_json()
-
-    # Validate user and fetch identify
-
-    # Process Chat
-
-    # Return response
-
-
-    # Compare Auth Data to DB
-
-    return jsonify(data)
-
-
-# TODO: SMS HANDLER
 
 # TODO: SERVE REACT

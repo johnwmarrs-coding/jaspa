@@ -10,7 +10,9 @@ uri = os.environ.get("MONGO_CONNECTION")
 print("MONGO_CONNECTION" in os.environ.keys())
 
 # Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
+client = None
+if uri:
+    client = MongoClient(uri, server_api=ServerApi('1'))
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -184,16 +186,16 @@ def adjust_configuration():
 
 running = True
 
-while running:
-    sender = 'Riley'
-    new_message = input("Write your message:")
-    response = handle_message(sender="Riley", message=f"{new_message}")
-    print(response)
+# while running:
+#     sender = 'Riley'
+#     new_message = input("Write your message:")
+#     response = handle_message(sender="Riley", message=f"{new_message}")
+#     print(response)
 
 # message_history = fetch_conversation_context("Riley")
 # for result in message_history:
 #     print(result)
 
-clear_chats()
+#clear_chats()
 
 
