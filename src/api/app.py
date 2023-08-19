@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from authentication import validate_token, authenticate
 from chat import handle_message
 from flask_cors import CORS
@@ -11,7 +11,7 @@ mock = os.environ.get("MOCK")
 
 def mock_authenticate(success=True):
     if (success):
-        pass
+        return
     else:
         pass
 
