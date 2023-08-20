@@ -93,7 +93,7 @@ const Chat = () => {
       component="main"
       maxWidth="md"
       sx={{
-        height: "95vh",
+        height: { xs: "65vh", sm: "95vh" },
         border: "1px solid #ccc",
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         borderRadius: "10px",

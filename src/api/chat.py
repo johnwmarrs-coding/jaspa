@@ -186,15 +186,5 @@ def adjust_configuration():
     pass
 
 
-running = True
-
-# while running:
-#     sender = 'Riley'
-#     new_message = input("Write your message:")
-#     response = handle_message(sender="Riley", message=f"{new_message}")
-#     print(response)
-
-# message_history = fetch_conversation_context("Riley")
-# for result in message_history:
-#     print(result)
-
+if __name__ == "__main__":
+    clear_chats()

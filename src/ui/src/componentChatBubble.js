@@ -15,7 +15,7 @@ const ChatBubble = ({ message }) => {
         elevation={3}
         sx={{
           borderRadius: "12px",
-          backgroundColor: "#f3f3f3", // You can change this
+          backgroundColor: message.sender == "Jaspa" ? "#f3f3f3" : "#E3D3FF", // You can change this
           maxWidth: "80%",
           padding: "10px 20px",
           margin: "10px 20px",
