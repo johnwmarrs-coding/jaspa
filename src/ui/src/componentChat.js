@@ -34,7 +34,6 @@ const Chat = () => {
   }, [messageHistory]);
 
   const handleSubmit = async (event) => {
-    setIsWorking(true);
     if (text.trim().length == 0) {
       return;
     }
@@ -45,6 +44,7 @@ const Chat = () => {
       { message: text, recipient: "Jaspa", sender: user.name },
     ];
     setMessageHistory(updatedMessages);
+    setIsWorking(true);
     const postBody = {
       message: text,
     };
@@ -93,7 +93,7 @@ const Chat = () => {
       component="main"
       maxWidth="md"
       sx={{
-        height: { xs: "65vh", sm: "95vh" },
+        height: "95vh",
         border: "1px solid #ccc",
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         borderRadius: "10px",

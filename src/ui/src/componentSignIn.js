@@ -20,6 +20,8 @@ import { UserContext } from "./App";
 
 import { config } from "./config";
 
+import { Hearts } from "react-loader-spinner";
+
 import axios from "axios";
 import moment from "moment";
 
@@ -36,7 +38,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const postBody = {
       password: data.get("motto"),
-      first_date_password: date.format("MM/DD/YYYY").toString(),
+      first_date_password: date?.format("MM/DD/YYYY").toString(),
       user_password: data.get("animal"),
     };
     console.log(postBody);
@@ -45,7 +47,6 @@ export default function SignIn() {
 
     try {
       const url = config.url.API_URL + "/authenticate";
-      console.log("url: ", url);
       const response = await axios.post(url, postBody, {
         headers: { "Content-Type": "application/json" },
       });
@@ -83,6 +84,11 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {isInvalid && (
+            <Typography sx={{ color: "red" }}>
+              Could not log in with the supplied credentials.
+            </Typography>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
