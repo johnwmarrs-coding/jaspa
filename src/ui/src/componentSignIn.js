@@ -29,7 +29,7 @@ export default function SignIn() {
   const { user, setUser } = useContext(UserContext);
   const [isWorking, setIsWorking] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
-  const [date, setDate] = useState("MM/DD/YYYY");
+  const [date, setDate] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -99,12 +99,13 @@ export default function SignIn() {
             ></TextField>
             <DatePicker
               name="date"
-              label="date"
+              label="date *"
               id="date"
               value={date}
               onChange={(value) => {
                 setDate(value);
               }}
+              sx={{ width: "100%" }}
             />
             <TextField
               margin="normal"

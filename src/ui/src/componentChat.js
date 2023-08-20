@@ -12,6 +12,8 @@ import SendIcon from "@mui/icons-material/Send";
 
 import CssBaseline from "@mui/material/CssBaseline";
 
+import { ThreeDots } from "react-loader-spinner";
+
 import ChatBubble from "./componentChatBubble";
 
 const Chat = () => {
@@ -32,6 +34,7 @@ const Chat = () => {
   }, [messageHistory]);
 
   const handleSubmit = async (event) => {
+    setIsWorking(true);
     if (text.trim().length == 0) {
       return;
     }
@@ -48,8 +51,6 @@ const Chat = () => {
 
     setText("");
     console.log(postBody);
-
-    setIsWorking(true);
 
     try {
       const url = config.url.API_URL + "/chat";
@@ -129,6 +130,16 @@ const Chat = () => {
           )}
           {messageHistory.length > 0 &&
             messageHistory.map((message) => <ChatBubble message={message} />)}
+
+          {isWorking && (
+            <ChatBubble
+              message={{
+                sender: "Jaspa",
+                message: <ThreeDots height={24} width={24} color="black" />,
+                recipient: user.name,
+              }}
+            />
+          )}
           <div ref={messagesEndRef}></div>
         </Box>
 
