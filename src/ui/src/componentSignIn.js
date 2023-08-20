@@ -12,7 +12,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import EmojiInput from "./componentEmojiInput";
 
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
@@ -54,11 +53,12 @@ export default function SignIn() {
       if (response.status === 200) {
         setUser({
           authToken: response.data.token,
-          displayName: response.user,
+          name: response.user,
           loggedIn: true,
         });
       }
     } catch (error) {
+      console.log("error");
       setIsInvalid(true);
     } finally {
       setIsWorking(false);

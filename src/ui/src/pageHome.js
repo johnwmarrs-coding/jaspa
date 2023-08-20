@@ -1,39 +1,19 @@
 import React from "react";
 
-import { Button } from "@mui/material";
 import SignIn from "./componentSignIn";
+import Chat from "./componentChat";
+import { useContext } from "react";
+import { UserContext } from "./App";
 
 const Home = () => {
-  return (
-    // <div className="home-container">
-    //   <img src="/jaspa2.png" alt="Jaspa" style={{ width: "300px" }} />
-    //   <p>
-    //     My name is JASPA. I am John's automated planning and scheduling
-    //     assistant.
-    //   </p>
-    //   <Button variant="contained">Hello world</Button>
+  const { user, setUser } = useContext(UserContext);
+  console.log(user);
 
-    //   <div className="home-features">
-    //     <h2>Key Features</h2>
-    //     <ul>
-    //       <li>Feature 1: Description of feature 1</li>
-    //       <li>Feature 2: Description of feature 2</li>
-    //       <li>Feature 3: Description of feature 3</li>
-    //       {/* Add more features as needed */}
-    //     </ul>
-    //   </div>
-
-    //   <div className="home-updates">
-    //     <h2>Recent Updates</h2>
-    //     <ul>
-    //       <li>Update 1: Description of the update</li>
-    //       <li>Update 2: Description of the update</li>
-    //       {/* Add more updates as needed */}
-    //     </ul>
-    //   </div>
-    // </div>
-    <SignIn></SignIn>
-  );
+  if (user?.loggedIn) {
+    return <Chat />;
+  } else {
+    return <SignIn />;
+  }
 };
 
 export default Home;
