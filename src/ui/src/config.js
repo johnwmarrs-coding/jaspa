@@ -1,6 +1,6 @@
 const prod = {
   url: {
-    API_URL: "http://localhost:5000",
+    API_URL: "https://jaspa-ai-1434029883ca.herokuapp.com/",
   },
 };
 const dev = {
