@@ -78,7 +78,6 @@ def authenticate(data):
 
         token = None
         if (secret_passed and date_passed and (john_passed or riley_passed)):
-            print('6')
             if (john_passed):
                 token=generate_token('John', result['salt'])
             elif (riley_passed):

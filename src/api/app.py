@@ -1,20 +1,22 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from authentication import validate_token, authenticate
 from chat import handle_message
 from flask_cors import CORS
-app = Flask(__name__)
 import os
+
+app = Flask(__name__, static_folder='build', static_url_path='/')
 CORS(app)
 
 
-mock = os.environ.get("MOCK")
-
-def mock_authenticate(success=True):
-    if (success):
-        return
+# Serve React App
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
     else:
-        pass
-
+        return send_from_directory(app.static_folder, 'index.html')
+    
 
 @app.route('/authenticate', methods=['POST'])
 def authenticate_user():
@@ -36,13 +38,16 @@ def chat():
     authorization_header = request.headers.get('Authorization')
     if authorization_header:
         token_hash = authorization_header.split(' ')[1]
-        print(authorization_header)
+    
         
         token = validate_token(token_hash)
         if token:
             return handle_message(sender=token['user'], message=data['message'])
         else:
             return '', 401
+    
 
+if __name__ == "__main__":
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
 
-# TODO: SERVE REACT

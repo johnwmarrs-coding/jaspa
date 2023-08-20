@@ -5,14 +5,16 @@ from pymongo.server_api import ServerApi
 from datetime import datetime, timedelta
 from pymongo import DESCENDING, ASCENDING
 from pprint import pprint
+from bson import json_util
+
 
 uri = os.environ.get("MONGO_CONNECTION")
-print("MONGO_CONNECTION" in os.environ.keys())
 
 # Create a new client and connect to the server
 client = None
 if uri:
     client = MongoClient(uri, server_api=ServerApi('1'))
+    print('Mongo Client Established!')
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -54,7 +56,6 @@ def identify_intent(sender, message, configuration):
         # Identify purpose of chat
         # Respond in most fitting manner
 
-        print('Handling Message')
         #return result
         return result['choices'][0]['message']['content']
 
@@ -103,8 +104,7 @@ def clear_chats():
         collection = db["chats"]
 
         result = collection.delete_many({})
-        print('Deleted all chats')
-
+        print('Chat cleared')
         return result
     except Exception as e:
         print(e)
@@ -115,7 +115,6 @@ def handle_message(sender="Riley", message="Hello, how are you doing today?"):
 
     configuration = fetch_configuration()
 
-    #print(identify_intent(sender=sender, message=message, configuration=configuration))
     conversation_context = fetch_conversation_context(user=sender)
 
     messages = [
@@ -143,16 +142,19 @@ def handle_message(sender="Riley", message="Hello, how are you doing today?"):
     messages=messages
     )
 
-    save_message(sender=sender, recipient='Jaspa', message=new_message)
-    save_message(sender='Jaspa', recipient=sender, message=result['choices'][0]['message']['content'])
+    save_message(sender=sender, recipient='Jaspa', message=message)
+
+    message_text = result['choices'][0]['message']['content']
+    save_message(sender='Jaspa', recipient=sender, message=message_text)
 
     # Load in previous chat context
     # Identify purpose of chat
     # Respond in most fitting manner
-
-    print('Handling Message')
     #return result
-    return result['choices'][0]['message']['content']
+    if (message_text):
+        return json_util.dumps({'message': message_text, 'sender': 'Jaspa', 'recipient': sender})
+    else:
+        return None
 
 
 def notify_user():
@@ -195,7 +197,4 @@ running = True
 # message_history = fetch_conversation_context("Riley")
 # for result in message_history:
 #     print(result)
-
-#clear_chats()
-
 
