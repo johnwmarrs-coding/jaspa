@@ -80,8 +80,8 @@ def fetch_configuration():
         return None
     
 def fetch_conversation_context(user):
-    # Fetch Last 10 messages
-    # Provide 1 paragraph Summary of 10 before that
+    # Fetch Last 6 messages
+    # Provide 1 paragraph Summary of 6 before that
     try:
         db = client["jaspa"]
         collection = db["chats"]
@@ -89,7 +89,7 @@ def fetch_conversation_context(user):
         query = {"$or": [{"sender": user}, {"recipient": user}]}
         projection = {"_id": 0, "sender": 1, "recipient": 1, "message": 1, "timestamp": 1}
 
-        result = collection.find(query, projection).sort("timestamp", DESCENDING).limit(10)
+        result = collection.find(query, projection).sort("timestamp", DESCENDING).limit(6)
 
         return result
     except Exception as e:
@@ -134,6 +134,7 @@ def handle_message(sender="Riley", message="Hello, how are you doing today?"):
     messages.extend(messages_to_add)
     messages.append({"role": "system", "content": f"You are currently speaking with {sender}."},)
     messages.append({"role": "user", "content": message})
+    messages.append({"role": "user", "content": configuration['quirk']})
 
     #pprint(messages)
     
@@ -187,4 +188,13 @@ def adjust_configuration():
 
 
 if __name__ == "__main__":
-    clear_chats()
+    #clear_chats()
+
+    running = True
+    user = input("Who are you?")
+    while(running):
+        query = input('Enter Message:')
+
+        response = handle_message(sender=user, message=query)
+        response_object = json_util.loads(response)
+        print(response_object['message'])
